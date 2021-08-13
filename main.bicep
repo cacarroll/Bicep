@@ -233,11 +233,8 @@ module azfirewall 'modules/vnet/firewall.bicep' = {
               targetFqdns: [
                 '*.azmk8s.io' 
                 'aksrepos.azurecr.io'
-                '*.blob.core.windows.net' 
                 'mcr.microsoft.com' 
                 '*.cdn.mscr.io' 
-                'management.azure.com' 
-                'login.microsoftonline.com' 
                 'packages.azure.com' 
                 'acs-mirror.azureedge.net' 
                 '*.opinsights.azure.com' 
@@ -293,10 +290,8 @@ module azfirewall 'modules/vnet/firewall.bicep' = {
                 'packages.microsoft.com' 
                 'azure.archive.ubuntu.com' 
                 'security.ubuntu.com' 
-                'hack32003.vault.azure.net' 
                 '*.letsencrypt.org' 
                 'usage.projectcalico.org' 
-                'gov-prod-policy-data.trafficmanager.net' 
                 'vortex.data.microsoft.com'
               ]
               sourceAddresses: [
