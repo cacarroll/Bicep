@@ -35,62 +35,62 @@ jobs:
       - name: Run Azure Bicep to create ARM Template
         run: bicep build ./main.bicep
         
-  deploy:
-    name: Deploy AKS Test Lab
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+  # deploy:
+  #   name: Deploy AKS Test Lab
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    # Login into your Azure Subscription using your Azure credentials - make sure the credentials has write permissions for the specific resource group/subscription. The credentials should be stored in GitHub Secrets - (Go to Settings Tab ->Secrets)
-    - name: Azure Login
-      uses: Azure/login@v1.1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #   # Login into your Azure Subscription using your Azure credentials - make sure the credentials has write permissions for the specific resource group/subscription. The credentials should be stored in GitHub Secrets - (Go to Settings Tab ->Secrets)
+  #   - name: Azure Login
+  #     uses: Azure/login@v1.1
+  #     with:
+  #       creds: ${{ secrets.AZURE_CREDENTIALS }}
         
-    # Use azure government
-    - name: Use AzureUSGovernment
-      run: az cloud set --name AzureUSGovernment
+  #   # Use azure government
+  #   - name: Use AzureUSGovernment
+  #     run: az cloud set --name AzureUSGovernment
 
-    # Deploy the cluster into your environment, assuming all prerequisites are up and running.
-    - name: Azure CLI - Deploy AKS cluster
-      id: aks-cluster
-      uses: Azure/cli@v1.0.0
-      with:
-        inlineScript: |
-         az group create --name ${{ env.RESOURCE_GROUP }} --location ${{ env.RESOURCE_GROUP_LOCATION }}
-         az deployment group $([[ ${{ github.event_name }} = pull_request ]] && echo what-if --no-pretty-print || echo create) \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --template-file "cluster-stamp.json" \
-            --name "cluster-stamp" \
-            --parameters \
-              location=${{ env.AKS_LOCATION }} \
-              geoRedundancyLocation=${{ env.GEO_REDUNDANCY_LOCATION }} \
-              targetVnetResourceId=${{ env.TARGET_VNET_RESOURCE_ID }} \
-              k8sControlPlaneAuthorizationTenantId=${{ env.K8S_RBAC_AAD_PROFILE_TENANTID }} \
-              clusterAdminAadGroupObjectId=${{ env.K8S_RBAC_AAD_PROFILE_ADMIN_GROUP_OBJECTID }} \
-              a0008NamespaceReaderAadGroupObjectId=${{ env.K8S_RBAC_AAD_A0008_READER_GROUP_OBJECTID }} \
-              clusterAuthorizedIPRanges=${{ env.CLUSTER_AUTHORIZED_IP_RANGES}} \
-              appGatewayListenerCertificate=${{ secrets.APP_GATEWAY_LISTENER_CERTIFICATE_BASE64 }} \
-              aksIngressControllerCertificate=${{ secrets.AKS_INGRESS_CONTROLLER_CERTIFICATE_BASE64 }}
-          echo "::set-output name=name::$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)"
-        azcliversion: 2.17.1
+  #   # Deploy the cluster into your environment, assuming all prerequisites are up and running.
+  #   - name: Azure CLI - Deploy AKS cluster
+  #     id: aks-cluster
+  #     uses: Azure/cli@v1.0.0
+  #     with:
+  #       inlineScript: |
+  #        az group create --name ${{ env.RESOURCE_GROUP }} --location ${{ env.RESOURCE_GROUP_LOCATION }}
+  #        az deployment group $([[ ${{ github.event_name }} = pull_request ]] && echo what-if --no-pretty-print || echo create) \
+  #           --resource-group ${{ env.RESOURCE_GROUP }} \
+  #           --template-file "cluster-stamp.json" \
+  #           --name "cluster-stamp" \
+  #           --parameters \
+  #             location=${{ env.AKS_LOCATION }} \
+  #             geoRedundancyLocation=${{ env.GEO_REDUNDANCY_LOCATION }} \
+  #             targetVnetResourceId=${{ env.TARGET_VNET_RESOURCE_ID }} \
+  #             k8sControlPlaneAuthorizationTenantId=${{ env.K8S_RBAC_AAD_PROFILE_TENANTID }} \
+  #             clusterAdminAadGroupObjectId=${{ env.K8S_RBAC_AAD_PROFILE_ADMIN_GROUP_OBJECTID }} \
+  #             a0008NamespaceReaderAadGroupObjectId=${{ env.K8S_RBAC_AAD_A0008_READER_GROUP_OBJECTID }} \
+  #             clusterAuthorizedIPRanges=${{ env.CLUSTER_AUTHORIZED_IP_RANGES}} \
+  #             appGatewayListenerCertificate=${{ secrets.APP_GATEWAY_LISTENER_CERTIFICATE_BASE64 }} \
+  #             aksIngressControllerCertificate=${{ secrets.AKS_INGRESS_CONTROLLER_CERTIFICATE_BASE64 }}
+  #         echo "::set-output name=name::$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)"
+  #       azcliversion: 2.17.1
 
-    # Set the AKS cluster context
-    - name: Set the AKS cluster context
-      uses: Azure/aks-set-context@v1
-      if: github.event_name == 'push'
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ steps.aks-cluster.outputs.name }}
-        resource-group: ${{ env.RESOURCE_GROUP }}
+  #   # Set the AKS cluster context
+  #   - name: Set the AKS cluster context
+  #     uses: Azure/aks-set-context@v1
+  #     if: github.event_name == 'push'
+  #     with:
+  #       creds: '${{ secrets.AZURE_CREDENTIALS }}'
+  #       cluster-name: ${{ steps.aks-cluster.outputs.name }}
+  #       resource-group: ${{ env.RESOURCE_GROUP }}
 
-    # Create the cluster-baseline-settings namespace and deploy Flux into it
-    - name: Create the cluster-baseline-settings namespace and deploy Flux
-      uses: Azure/k8s-deploy@v1
-      if: github.event_name == 'push'
-      with:
-        namespace: 'cluster-baseline-settings'
-        manifests: |
-          cluster-manifests/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
-          cluster-manifests/cluster-baseline-settings/flux.yaml
+  #   # Create the cluster-baseline-settings namespace and deploy Flux into it
+  #   - name: Create the cluster-baseline-settings namespace and deploy Flux
+  #     uses: Azure/k8s-deploy@v1
+  #     if: github.event_name == 'push'
+  #     with:
+  #       namespace: 'cluster-baseline-settings'
+  #       manifests: |
+  #         cluster-manifests/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
+  #         cluster-manifests/cluster-baseline-settings/flux.yaml
