@@ -17,14 +17,17 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
 
-      # Log into Azure
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
     # Use azure government
     - name: Use AzureUSGovernment
       run: az cloud set --name AzureUSGovernment
+
+    # Login to azure
+    - name: Login Azure
+      run: az login --service-principal -u ${{secrets.AZURE_SP_ID}} -p ${{secrets.AZURE_SP_SECRET}} --tenant ${{secrets.AZURE_SP_TENANT}}
+
+    # Set azure subscription
+    - name: Set Azure Subscription
+      run: az account set --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
     #   # Deploy Bicep file
     # - name: deploy
