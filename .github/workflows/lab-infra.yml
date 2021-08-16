@@ -17,6 +17,18 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
 
+    # Download azure bicep
+    - name: Download Azure Bicep
+      run: |
+        curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+        chmod +x ./bicep
+        sudo mv ./bicep /usr/local/bin/bicep
+        bicep --help
+
+    # Run azure bicep to generate ARM template
+    - name: Run Azure Bicep to create ARM Template
+      run: bicep build ./aks-demo/bicep/aks-master.bicep
+
     # Use azure government
     - name: Use AzureUSGovernment
       run: az cloud set --name AzureUSGovernment
