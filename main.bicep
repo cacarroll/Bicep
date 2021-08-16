@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 // Parameters
-param baseName string = 'Contoso'
+param baseName string = 'Contosoazy'
 param aadGroupdIds array = [
   'e822cf30-7f5e-4968-a215-5cc48d538580'
 ]
