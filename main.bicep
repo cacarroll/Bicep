@@ -69,8 +69,8 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
   params: {
     kvName: 'keyvaultjumpbox'
     enabledForTemplateDeployment: true
+    tenantId: tenantId
     kvsku: {
-      tenantId: tenantId
       name: 'Premium'
       family: 'A'      
     }
