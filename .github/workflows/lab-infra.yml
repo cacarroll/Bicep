@@ -49,6 +49,6 @@ jobs:
         scope: subscription
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: main.json
-        region: eastus
+        region: usgovvirginia
         # parameters:
         failOnStdErr: false
