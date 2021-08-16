@@ -517,7 +517,7 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
   params: {
     kvName: 'keyvaultjumpbox'
     enabledForTemplateDeployment: true
-    sku: {
+    kvsku: {
       name: 'Standard'
       family: 'A'      
     }
