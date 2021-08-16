@@ -48,5 +48,5 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: main.json
-        # parameters: storagePrefix=mystore
+        parameters: location=eastus
         failOnStdErr: false
