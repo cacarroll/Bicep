@@ -50,5 +50,5 @@ jobs:
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: main.json
         region: usgovvirginia
-        # parameters:
+        parameters: tenantId = ${{secrets.AZURE_SP_TENANT}}
         failOnStdErr: false

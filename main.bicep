@@ -2,6 +2,8 @@ targetScope = 'subscription'
 
 // Parameters
 param baseName string = 'Contosoazy2'
+param tenantId string
+
 param aadGroupdIds array = [
   'e822cf30-7f5e-4968-a215-5cc48d538580'
 ]
@@ -68,6 +70,7 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
     kvName: 'keyvaultjumpbox'
     enabledForTemplateDeployment: true
     kvsku: {
+      tenantId: tenantId
       name: 'Premium'
       family: 'A'      
     }
