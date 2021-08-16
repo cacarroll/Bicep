@@ -7,9 +7,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   location: resourceGroup().location
   properties: {
     enabledForTemplateDeployment: enabledForTemplateDeployment
-    sku: {
-      sku: kvsku
-    }
+    sku: kvsku
   }
 }
 
