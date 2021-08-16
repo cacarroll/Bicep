@@ -27,7 +27,7 @@ jobs:
 
     # Run azure bicep to generate ARM template
     - name: Run Azure Bicep to create ARM Template
-      run: bicep build ./aks-demo/bicep/aks-master.bicep
+      run: bicep build ./main.bicep
 
     # Use azure government
     - name: Use AzureUSGovernment
