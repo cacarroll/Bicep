@@ -48,6 +48,6 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: main.json
-        location: eastus
+        region: eastus
         # parameters:
         failOnStdErr: false
