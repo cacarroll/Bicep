@@ -419,7 +419,7 @@ module privatednsACRZone 'modules/vnet/privatednszone.bicep' = {
   scope: resourceGroup(rg.name)
   name: 'privatednsACRZone'
   params: {
-    privateDNSZoneName: 'privatelink.azurecr.io'
+    privateDNSZoneName: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
   }
 }
 
@@ -509,6 +509,22 @@ module jumpbox 'modules/VM/virtualmachine.bicep' = {
     publicKey: pubkeydata
     script64: script64
   }
+}
+
+module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
+  scope: resourceGroup(rg.name)
+  name: 'keyvaultjumpbox'
+  params: {
+    kvName: 'keyvaultjumpbox'
+    enabledForTemplateDeployment: true
+    sku: {
+      name: 'Standard'
+      family: 'A'      
+    }
+  }
+  dependsOn: [
+    rg
+  ] 
 }
 
 module publicipbastion 'modules/vnet/publicip.bicep' = {
