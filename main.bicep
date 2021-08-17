@@ -68,8 +68,8 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
   name: 'keyvaultjumpbox'
   params: {
     kvName: 'keyvaultjumpbox'
-    // enabledForTemplateDeployment: true
-    // enableRbacAuthorization: true
+    enabledForTemplateDeployment: true
+    enableRbacAuthorization: true
     tenantId: tenantId
     kvsku: {
       name: 'Premium'
