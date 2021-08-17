@@ -85,7 +85,7 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
 
 module sshSecret 'modules/keyvault/kvsecret.bicep' = {
   scope: resourceGroup(rg.name)
-  name: 'secretjumpbox'
+  name: 'secretjumpbox/sshSecret'
   params: {
    secretName: 'sshSecret'
    secretValue: 'secret'
