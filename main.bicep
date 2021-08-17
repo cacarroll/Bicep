@@ -459,7 +459,7 @@ module privatednsACRZone 'modules/vnet/privatednszone.bicep' = {
   scope: resourceGroup(rg.name)
   name: 'privatednsACRZone'
   params: {
-    privateDNSZoneName: 'privatelink.containerservice.azure.us'
+    privateDNSZoneName: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
   }
 }
 
