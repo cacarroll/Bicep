@@ -53,7 +53,9 @@ var rgName = '${baseName}-RG'
 // Must be unique name
 var acrName = '${baseName}acr'
 
-// var dnsZoneName = '${deployment().location}'
+// Dns H
+var acrDnsZoneName = 'acrprivatelink.${deployment().location}.cs.aks.containerservice.azure.us'
+var aksDnsZoneName = 'aksprivatelink.${deployment().location}.cs.aks.containerservice.azure.us'
 
 module rg 'modules/resource-group/rg.bicep' = {
   name: rgName
@@ -459,7 +461,7 @@ module privatednsACRZone 'modules/vnet/privatednszone.bicep' = {
   scope: resourceGroup(rg.name)
   name: 'privatednsACRZone'
   params: {
-    privateDNSZoneName: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
+    privateDNSZoneName: acrDnsZoneName
   }
 }
 
@@ -492,7 +494,7 @@ module privatednsAKSZone 'modules/vnet/privatednszone.bicep' = {
   scope: resourceGroup(rg.name)
   name: 'privatednsAKSZone'
   params: {
-    privateDNSZoneName: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
+    privateDNSZoneName: aksDnsZoneName
   }
 }
 
@@ -514,7 +516,7 @@ module aksIdentity 'modules/Identity/userassigned.bicep' = {
 }
 
 resource pvtdnsAKSZone 'Microsoft.Network/dnsZones@2018-05-01' existing = {
-  name: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
+  name: aksDnsZoneName
   scope: resourceGroup(rg.name)
 }
 
