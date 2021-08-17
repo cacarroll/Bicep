@@ -81,6 +81,25 @@ module keyvaultjumpbox 'modules/keyvault/kv.bicep' = {
   ] 
 }
 
+
+module keyvaultkubernetes 'modules/keyvault/kv.bicep' = {
+  scope: resourceGroup(rg.name)
+  name: 'keyvaultkubernetes'
+  params: {
+    kvName: 'keyvaultkubernetes'
+    enabledForTemplateDeployment: false
+    enableRbacAuthorization: true
+    tenantId: tenantId
+    kvsku: {
+      name: 'Premium'
+      family: 'A'      
+    }
+  }
+  dependsOn: [
+    rg
+  ] 
+}
+
 // module vnethub 'modules/vnet/vnet.bicep' = {
 //   scope: resourceGroup(rg.name)
 //   name: 'hub-VNet'
