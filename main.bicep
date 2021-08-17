@@ -55,7 +55,7 @@ var acrName = '${baseName}acr'
 
 // Dns H
 var acrDnsZoneName = 'acrprivatelink.${deployment().location}.cs.aks.containerservice.azure.us'
-var aksDnsZoneName = 'aksprivatelink.${deployment().location}.cs.aks.containerservice.azure.us'
+var aksDnsZoneName = 'aksprivatelink.${deployment().location}.cx.aks.containerservice.azure.us'
 
 module rg 'modules/resource-group/rg.bicep' = {
   name: rgName

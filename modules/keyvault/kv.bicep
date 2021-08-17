@@ -13,7 +13,6 @@ resource keyvault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     enableRbacAuthorization: enableRbacAuthorization
     sku: kvsku
   }
-  
 }
 
 output kvid string = keyvault.id
