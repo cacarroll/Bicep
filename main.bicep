@@ -492,7 +492,7 @@ module privatednsAKSZone 'modules/vnet/privatednszone.bicep' = {
   scope: resourceGroup(rg.name)
   name: 'privatednsAKSZone'
   params: {
-    privateDNSZoneName: 'k8privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
+    privateDNSZoneName: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
   }
 }
 
@@ -514,7 +514,7 @@ module aksIdentity 'modules/Identity/userassigned.bicep' = {
 }
 
 resource pvtdnsAKSZone 'Microsoft.Network/dnsZones@2018-05-01' existing = {
-  name: 'k8privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
+  name: 'privatelink.usgovvirginia.cx.aks.containerservice.azure.us'
   scope: resourceGroup(rg.name)
 }
 
