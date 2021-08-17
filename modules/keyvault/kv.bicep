@@ -1,6 +1,6 @@
 param kvName string
-param enabledForTemplateDeployment bool
-param enableRbacAuthorization bool
+// param enabledForTemplateDeployment bool
+// param enableRbacAuthorization bool
 param kvsku object
 param tenantId string
 
