@@ -1,7 +1,8 @@
 param subnetId string
+param nicName string
 
 resource jbnic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
-  name: 'jbnic'
+  name: nicName
   location: resourceGroup().location
   properties: {
     ipConfigurations: [

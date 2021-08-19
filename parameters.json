@@ -1,0 +1,139 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tenantId": {
+            "value":"8a09f2d7-8415-4296-92b2-80bb4666c5fc"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "rgName":{
+            "value": "kvtest"
+        },
+        "vms": {
+            "value": [
+                {
+                    "name": "Win10JumpBox2",
+                    "osProfile": {
+                        "computerName": "Win10JumpBox2",
+                        "adminUsername": "azureuser"
+                    },
+                    "hardwareProfile": {
+                        "vmSize": "Standard_A2"
+                    },
+                    "storageProfile": {
+                        "imageReference": {
+                            "publisher": "MicrosoftWindowsServer",
+                            "offer": "WindowsServer",
+                            "sku": "2019-DataCenter",
+                            "version": "latest"
+                        },
+                        "osDisk" : {
+                            "createOption": "FromImage",
+                            "managedDisk": {
+                                "storageAccountType": "Standard_LRS"
+                            }
+                        }
+                    },
+                    "dataDisks": {
+                        "diskSizeGB":  1023,
+                        "lun": 0,
+                        "createOption": "Empty"
+                    },
+                    "secretName": "adminPassword"
+                }
+                // {
+                //     "osProfile": {
+                //         "computerName": "RhelJumpBox"
+                    
+                //     },
+                //     "hardwareProfile": {
+                //         "vmSize": "Standard_A2"
+                //     },
+                //     "storageProfile": {
+                //         "imageReference": {
+                //             "publisher": "Canonical",
+                //             "offer": "UbuntuServer",
+                //             "sku": "18.04-LTS",
+                //             "version": "latest"
+                //         }
+                //     },
+                //     "osDisk" : {
+                //         "createOption": "FromImage",
+                //         "managedDisk": {
+                //             "storageAccountType": "Standard_LRS"
+                //         }
+                //     },
+                //     "dataDisks": {
+                //         "diskSizeGB":  1023,
+                //         "lun": 0,
+                //         "createOption": "Empty"
+                //     },
+                //     "secretName": "adminPassword"
+                // }
+            ]
+        },
+        "secrets":{
+            "value": [
+            {
+                "name": "adminPassword",
+                "value": "!@#ACDEerkk123f",
+                "keyVault": "keyvaultjumpbox"
+            },
+            {
+                "name": "pubkeydata",
+                "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDvpasQjhJ8a3frGGNROuN/VDiEEkVrgaCxtiXaw0E6F/1cQQ6WBvPKwVZaXgkq/Vc894EbltToIHn/xLnsR1Tkf0+6IkMpg6XEPWAW6ZWGgFX/GMtd72f49fjtxUwYylmAGag5Q4HjS8TzdruQAxVqwIspSKrn4GQwHVllsMYsuua2Dsam009Ntm65siZHRKDWvhXP5WmqdMDdn4YkiFThbx7C6nxa8KPbhmlwSbOezrIIzDZkN+vOQyvQNAMZqLU+SSZ5WMMSaNUgVL5F1muuXi7L63x6mYNOUm40Baw0HHyzyi9HW+BpYfLjzI4U55MShFNUfnDDv3lJWwBppKrCRe4004vhON3sEQtt5wqsuxaMNLBso2iJ23zHR0KbCAxBdiHYp8m7rN8JJivXbkGyTwqg/OpNtoppCg7h6wvJ5fMsozQpNYqP0iqz2Vo7GPWph6ndZLMj0MqG1ulh1GAUsHd0gwC9QiwrJpAMstnA1qqPcAOE81E027DK3NxqcJqDiiYg7COKoZcu4NzkXFAwCNn/o1mjczGv/e0ZPyrL6y0DHzKk6FvSmLiaHT8jMvaDELT8kI5n4ac1Gsu6BBQfi7SzPlYZHFJMTgMSdxINrQA7wVzhj6hVdInEuz6ZiUDqETKoIxr7+s4aw1fx0p2Htd7gWYZ0DXsT6yszWUXNcw== azureuser@jumpbox",
+                "keyVault": "keyvaultjumpbox"
+            }
+            ]
+        },
+        "keyvaults":{
+            "value": [
+            {
+                "name": "keyvaultjumpbox",
+                "enabledForTemplateDeployment": true,
+                "enableRbacAuthorization": true,
+                "sku": {
+                    "name": "Premium",
+                    "family": "A"
+                }
+            },
+            {
+                "name": "keyvaultkubernetes",
+                "enabledForTemplateDeployment": true,
+                "enableRbacAuthorization": true,
+                "sku": {
+                    "name": "Premium",
+                    "family": "A"
+                }
+            }
+            ]
+        }
+        // "virtualNetworks":{
+        //     "value": [
+        //         {
+        //             "name": "default",
+        //             "addressPrefix": "10.0.0.0/24",
+        //             "privateEndpointNetworkPolicies": ""
+        //         },
+        //         {
+        //             "name": "AzureFirewallSubnet",
+        //             "addressPrefix": "10.0.1.0/24",
+        //             "privateEndpointNetworkPolicies": ""
+        //         },
+        //         {
+        //             "name": "vmsubnet",
+        //             "addressPrefix": "10.0.2.0/28",
+        //             "privateEndpointNetworkPolicies": ""
+        //         },
+        //         {
+        //             "name": "AzureBastionSubnet",
+        //             "addressPrefix": "10.0.3.0/27",
+        //             "privateEndpointNetworkPolicies": ""
+        //         }
+        //     ]
+        // }
+
+    }
+} 
