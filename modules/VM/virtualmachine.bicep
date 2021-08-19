@@ -1,48 +1,62 @@
 param subnetId string
-param publicKey string
-param script64 string
+
+// param vmName string
+// param script64 string
+param vmsettings object
+@secure()
+param adminPassword string
+
+// @secure()
+// param publicKey string
 
 module jbnic '../vnet/nic.bicep' = {
-  name: 'jbnic'
+  name: '${vmsettings.name}nic'
   params: {
+    nicName: '${vmsettings.name}nic'
     subnetId: subnetId
   }
 }
 
-resource jumpbox 'Microsoft.Compute/virtualMachines@2021-03-01' = {
-  name: 'jumpbox'
+resource jumpbox2 'Microsoft.Compute/virtualMachines@2020-06-01' = {
+  name: vmsettings.name
   location: resourceGroup().location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     osProfile: {
-      computerName: 'jumpbox'
-      adminUsername: 'azureuser'
-      linuxConfiguration: {
-        ssh: {
-          publicKeys: [
-            {
-              path: '/home/azureuser/.ssh/authorized_keys'
-              keyData: publicKey
-            }
-          ]
-        }
-        disablePasswordAuthentication: true
+      computerName: vmsettings.name
+      adminUsername: vmsettings.osProfile.adminUsername
+      adminPassword: adminPassword
+      // linuxConfiguration: {
+      //   ssh: {
+      //     publicKeys: [
+      //       {
+      //         path: publicKey != null ? '/home/azureuser/.ssh/authorized_keys' : null
+      //         keyData: publicKey != null ? publicKey : null 
+      //       }
+      //     ]
+      //   }
+      // }
+      windowsConfiguration: {
+        provisionVMAgent: true
       }
     }
     hardwareProfile: {
-      vmSize: 'Standard_A2'
+      vmSize: vmsettings.hardwareProfile.vmSize
     }
     storageProfile: {
-      osDisk: {
-        createOption: 'FromImage'
-        managedDisk: {
-          storageAccountType: 'Standard_LRS'
-        }
-      }
       imageReference: {
-        publisher: 'Canonical'
-        offer: 'UbuntuServer'
-        sku: '18.04-LTS'
-        version: 'latest'
+        publisher: vmsettings.storageProfile.imageReference.publisher 
+        offer: vmsettings.storageProfile.imageReference.offer
+        sku: vmsettings.storageProfile.imageReference.sku
+        version: vmsettings.storageProfile.imageReference.version
+      }
+      osDisk: {
+        createOption: vmsettings.storageProfile.osDisk.createOption
+        managedDisk: {
+          storageAccountType: vmsettings.storageProfile.osDisk.managedDisk.storageAccountType
+        }
       }
     }
     networkProfile: {
@@ -55,17 +69,17 @@ resource jumpbox 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   }
 }
 
-resource vmext 'Microsoft.Compute/virtualMachines/extensions@2021-03-01' = {
-  name: '${jumpbox.name}/csscript'
-  location: resourceGroup().location
-  properties: {
-    publisher: 'Microsoft.Azure.Extensions'
-    type: 'CustomScript'
-    typeHandlerVersion: '2.1'
-    autoUpgradeMinorVersion: true
-    settings: {}
-    protectedSettings: {
-      script: script64
-    }
-  }
-}
+// resource vmext 'Microsoft.Compute/virtualMachines/extensions@2021-03-01' = {
+//   name: '${jumpbox.name}/csscript'
+//   location: resourceGroup().location
+//   properties: {
+//     publisher: 'Microsoft.Azure.Extensions'
+//     type: 'CustomScript'
+//     typeHandlerVersion: '2.1'
+//     autoUpgradeMinorVersion: true
+//     settings: {}
+//     protectedSettings: {
+//       script: script64
+//     }
+//   }
+// }
